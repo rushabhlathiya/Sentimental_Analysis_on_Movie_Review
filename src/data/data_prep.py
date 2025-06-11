@@ -52,35 +52,13 @@ def clean_text(text):
         return text
     except Exception as e:
         raise Exception(f"Error Cleaning Data {e}")
-
-def tfidf_weighted_document_vectors(tokens, doc_tfidf,tfidf_vocab,w2v):
-    try:
-        weighted_vectors = []
-        total_weight = 0
-
-        for word in tokens:
-            if word in w2v.wv and word in tfidf_vocab:
-                # Get TF-IDF weight for this word in current document
-                word_idx = tfidf_vocab[word]
-                weight = doc_tfidf[0, word_idx]
-
-                # Weight the word vector
-                weighted_vectors.append(w2v.wv[word] * weight)
-                total_weight += weight
-
-        if total_weight > 0:
-            return np.sum(weighted_vectors, axis=0) / total_weight
-        else:
-            return np.zeros(w2v.vector_size)
-    except Exception as e:
-        raise Exception(f"Error Tidf Weighted Vectors {e}")
-
+    
 # data_path =os.path.join('data','processed')
 
 # os.makedirs(data_path)
 def save_X_data(df:np.array,filePath:str)->None:
     try:
-        pd.DataFrame(df).to_csv(filePath,index=False,header=False)
+        pd.DataFrame(df).to_csv(filePath,index=False)
     except Exception as e:
         raise Exception(f"Error Saving X :{e}")
 
@@ -128,37 +106,14 @@ def main():
         X_train_tfidf=tfidf.fit_transform(train_data['tokenaizeText'])
         X_test_tfidf=tfidf.transform(test_data['tokenaizeText'])
 
-
-        tfidf_vocab = tfidf.vocabulary_
-        train_data['tokenaizeText'] = [text.split() for text in train_data['tokenaizeText']]
-        test_data['tokenaizeText'] = [text.split() for text in test_data['tokenaizeText']]
-
-        w2v = Word2Vec(
-            sentences=train_data['tokenaizeText'],
-            vector_size=100,  # Embedding dimension
-            window=5,        # Context window size
-            min_count=1,     # Ignore rare words (if < min_count)
-            workers=4        # Parallel processing
-        )
-        X_train = np.array([
-            tfidf_weighted_document_vectors(tokens, X_train_tfidf[i],tfidf_vocab,w2v)
-            for i, tokens in enumerate(train_data['tokenaizeText'])
-        ])
-        X_test = np.array([
-            tfidf_weighted_document_vectors(tokens, X_test_tfidf[i],tfidf_vocab,w2v)
-            for i, tokens in enumerate(test_data['tokenaizeText'])
-        ])
-
         y_train = train_data['label']
         y_test = test_data['label']
         
-        save_X_data(X_train,os.path.join(processed_filePath,'X_train.csv'))
-        save_X_data(X_test,os.path.join(processed_filePath,'X_test.csv'))
+        save_X_data(X_train_tfidf.toarray(),os.path.join(processed_filePath,'X_train_tfidf.csv'))
+        save_X_data(X_test_tfidf.toarray(),os.path.join(processed_filePath,'X_test_tfidf.csv'))
         save_y_data(y_train,os.path.join(processed_filePath,'y_train.csv'))
         save_y_data(y_test,os.path.join(processed_filePath,'y_test.csv'))
         
-        save_object(tfidf,'models/tfidf.pkl')
-        save_object(w2v,'models/w2v.pkl')
     except Exception as e:
         raise Exception(f"An Error Occured {e}")
     

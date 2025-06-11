@@ -8,7 +8,7 @@ from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score
 
 def load_X_test(filePath:str)->pd.DataFrame:
     try:
-        return pd.read_csv(filePath,header=None)
+        return pd.read_csv(filePath)
     except Exception as e:
         raise Exception(f"Error Loading Xtest form {filePath}:{e}")
 # X_test = pd.read_csv('data/processed/X_test.csv',header=None)
@@ -64,7 +64,7 @@ def main():
         model_name ='models/model.pkl'
         metrics_name='reports/metrics.json'
         
-        X_test= load_X_test(os.path.join(processed_filePath,'X_test.csv'))
+        X_test= load_X_test(os.path.join(processed_filePath,'X_test_tfidf.csv'))
         y_test= load_y_test(os.path.join(processed_filePath,'y_test.csv'))
         
         model = load_model(model_name)

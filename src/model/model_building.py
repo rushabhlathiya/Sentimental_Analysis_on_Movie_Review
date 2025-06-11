@@ -1,13 +1,13 @@
 import pandas as pd
 import numpy as np
-from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
 import pickle
 import yaml
 import os
 
 def load_X_train(filePath:str)->pd.DataFrame:
     try:
-        return pd.read_csv(filePath,header=None)
+        return pd.read_csv(filePath)
     except Exception as e:
         raise Exception(f"Error Loading Xtrain form {filePath}:{e}")
 # X_train = pd.read_csv('data/processed/X_train.csv',header=None)
@@ -28,9 +28,9 @@ def load_params(filePath:str)->float:
         raise Exception(f"Error Loading Params from {filePath}: {e}")
 # C = yaml.safe_load(open('params.yaml'))['model_building']['C']
 
-def train_model(X_train:pd.DataFrame,y_train:pd.Series,C:float)->SVC:
+def train_model(X_train:pd.DataFrame,y_train:pd.Series,C:float):
     try:
-        svm = SVC(C=C)
+        svm = LogisticRegression()
         svm.fit(X_train,y_train)
         return svm
     except Exception as e:
@@ -38,7 +38,7 @@ def train_model(X_train:pd.DataFrame,y_train:pd.Series,C:float)->SVC:
 # svm = SVC(C=C)
 # svm.fit(X_train,y_train)
 
-def save_model(model: SVC, filePath:str)->None:
+def save_model(model, filePath:str)->None:
     try:
         pickle.dump(model,open(filePath,'wb'))
     except Exception as e:
@@ -51,7 +51,7 @@ def main():
     params_filePath ='params.yaml'
     model_name = "models/model.pkl"
 
-    X_train = load_X_train(os.path.join(processed_filePath,'X_train.csv'))
+    X_train = load_X_train(os.path.join(processed_filePath,'X_train_tfidf.csv'))
     y_train = load_y_train(os.path.join(processed_filePath,'y_train.csv'))
     
     C= load_params(params_filePath)
