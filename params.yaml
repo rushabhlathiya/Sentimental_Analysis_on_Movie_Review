@@ -2,4 +2,4 @@ data_collection:
   test_size: 0.20
 
 model_building:
-  C: 1.7
+  C: 1.5

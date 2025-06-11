@@ -53,12 +53,12 @@ stages:
       size: 1994
     params:
       params.yaml:
-        model_building.C: 1.7
+        model_building.C: 1.5
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 80377f70551cc9c1559639e1231fa758
-      size: 7773252
+      md5: 3810a481e190b5f362140a905ec2b890
+      size: 7814252
   model_evaluation:
     cmd: python src/model/model_eval.py
     deps:
