@@ -40,7 +40,7 @@ def save_data(df:pd.DataFrame,filePath:str)->None:
 
 def main():
     try:
-        data_filePath = r'dataset\train-00000-of-00001.parquet'
+        data_filePath = r'data\external\train-00000-of-00001.parquet'
         params_filePath = 'params.yaml'
         raw_dataPath = os.path.join('data','raw')
         os.makedirs(raw_dataPath)

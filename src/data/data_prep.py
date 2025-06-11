@@ -157,8 +157,8 @@ def main():
         save_y_data(y_train,os.path.join(processed_filePath,'y_train.csv'))
         save_y_data(y_test,os.path.join(processed_filePath,'y_test.csv'))
         
-        save_object(tfidf,'tfidf.pkl')
-        save_object(w2v,'w2v.pkl')
+        save_object(tfidf,'models/tfidf.pkl')
+        save_object(w2v,'models/w2v.pkl')
     except Exception as e:
         raise Exception(f"An Error Occured {e}")
     

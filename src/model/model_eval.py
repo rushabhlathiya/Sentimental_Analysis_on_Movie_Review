@@ -61,8 +61,8 @@ def save_metrics(metrics_dict,filePath:str)-> None:
 def main():
     try:
         processed_filePath= 'data/processed'
-        model_name ='model.pkl'
-        metrics_name='metrics.json'
+        model_name ='models/model.pkl'
+        metrics_name='reports/metrics.json'
         
         X_test= load_X_test(os.path.join(processed_filePath,'X_test.csv'))
         y_test= load_y_test(os.path.join(processed_filePath,'y_test.csv'))

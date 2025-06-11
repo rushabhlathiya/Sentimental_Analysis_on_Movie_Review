@@ -49,7 +49,7 @@ def save_model(model: SVC, filePath:str)->None:
 def main():
     processed_filePath = 'data/processed'
     params_filePath ='params.yaml'
-    model_name = "model.pkl"
+    model_name = "models/model.pkl"
 
     X_train = load_X_train(os.path.join(processed_filePath,'X_train.csv'))
     y_train = load_y_train(os.path.join(processed_filePath,'y_train.csv'))
